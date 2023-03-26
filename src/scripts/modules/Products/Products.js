@@ -22,6 +22,7 @@ export class Products {
               <p>${product.description}</p>
               <p>$${product.price}</p>
               <button class="btn btn-primary">Add to cart</button>
+              <button data-productId="${product.id}" class="btn-delete">Delete</button>
               </div>
           `;
     });
@@ -48,6 +49,24 @@ export class Products {
 
   async getLimitedPosts() {
     const prod = await fetch(`${this.#baseUrl}/products?limit=${this.getInputAndAddToButton()}`)
+      .then((res) => res.json())
+      .then((json) => {
+        return json;
+      });
+    return prod;
+  }
+  async deleteProductById(products, id) {
+    //   fetch(`${this.#baseUrl}/products/${id}`,{
+    //           method:"DELETE"
+    //       })
+    //           .then(res=>res.json())
+    //           .then(json=>console.log(json))
+    // }
+    return products.filter((product) => product.id != id);
+  }
+
+  async sortProducts(sortType) {
+    const prod = await fetch(`${this.#baseUrl}/products?sort=${sortType}`)
       .then((res) => res.json())
       .then((json) => {
         return json;
