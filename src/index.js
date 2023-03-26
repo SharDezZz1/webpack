@@ -1,22 +1,24 @@
 // Watchers for scss and html files
 import "./index.scss";
-import "./scripts/watchers/_pages"
+import "./scripts/watchers/_pages";
 
-// Import modules
-import { calcSumNumbers, calcSubtractNumbers } from "./scripts/modules/calc";
-import { Elements } from "./scripts/modules/elements";
-
-// Import methods
-import { includeHTML } from "./scripts/methods/_includeComponents";
+// import modules
+import { Products } from "./scripts/modules/Products/Products";
 
 // Bisiness logic
-document.addEventListener('DOMContentLoaded', () => {
-  includeHTML();
-  console.log(calcSubtractNumbers(10, 5));
-  console.log(calcSumNumbers(10, 5));
-  const elements = new Elements();
-  elements.addElement('element 1');
-  elements.addElement('element 2');
-  elements.addElement('element 3');
-  console.log(elements);
+document.addEventListener("DOMContentLoaded", async () => {
+  let products = new Products();
+  products.products = await products.getAllProducts();
+  products.drawAllProducts();
+  document.querySelector('#count').addEventListener("change", () => {
+    products.getInputAndAddToButton();
+  })
+  const downloadButton = document.querySelector('#downloadButton');
+  downloadButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    products.products = await products.getLimitedPosts();
+    products.drawAllProducts();
+  })
 });
+
+
